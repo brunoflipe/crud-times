@@ -6,7 +6,6 @@ import (
 )
 
 func AddRoutes(r *gin.Engine) {
-
 	n1 := r.Group("/times")
 	{
 		n1.GET("/listar", controllers.ListarTimes)
