@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/brunoflipe/crud-times/models"
 	"github.com/brunoflipe/crud-times/routes"
 	"github.com/gin-gonic/gin"
 )
@@ -13,6 +14,8 @@ func CreateServer() {
 
 	r := gin.Default()
 	routes.AddRoutes(r)
+
+	models.ListaDeTimes = make([]*models.Time, 0)
 
 	fmt.Println("API escutando na porta 2525")
 	err := r.Run(":2525")
