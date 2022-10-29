@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"strconv"
+
 	"github.com/brunoflipe/crud-times/models"
 	"github.com/gin-gonic/gin"
 )
@@ -13,13 +15,43 @@ func ListarTimes(ctx *gin.Context) {
 
 func LerTime(ctx *gin.Context) {
 	// receber o id da requisição
+	id := ctx.Param("id")
 
-	// procurar o id dentro do array de ListaDeTimes
+	if id == "" {
+		ctx.JSON(400, gin.H{
+			"error": "id é obrigatorio",
+		})
+		return
+	}
+
+	newid, err := strconv.Atoi(id)
+	if err != nil {
+		ctx.JSON(400, gin.H{
+			"error": "Id tem q ser inteiro",
+		})
+
+		return
+	}
+	// achar o id correto
+	var time *models.Time
+	for i := 0; i < len(models.ListaDeTimes); i++ {
+		if newid == models.ListaDeTimes[i].ID {
+			time = models.ListaDeTimes[i]
+			break
+		}
+	}
+
+	if time == nil {
+		ctx.JSON(404, gin.H{
+			"mensagem": "time nâo encontrado",
+		})
+		return
+	}
 
 	// se achou o id, então retorna o time encontrado
 
 	ctx.JSON(200, gin.H{
-		"mensagem": "rota para ler time",
+		"time": time,
 	})
 }
 
